@@ -1,0 +1,19 @@
+version: "3"
+services:
+    web:
+        image: david09x/friendlyhello:latest
+    redis:
+        image: redis
+        ports:
+            - "6379:6379"
+        volumes:
+            - "./data:/data"
+        command: redis-server --appendonly yes
+    lb:
+        image: nginx:latest
+        depends_on:
+            - "web"
+        ports:
+            - "4000:80"
+        volumes:
+            - "./conf.d:/etc/nginx/conf.d"
